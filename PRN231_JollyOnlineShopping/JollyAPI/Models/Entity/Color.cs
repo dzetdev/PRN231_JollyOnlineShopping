@@ -12,11 +12,11 @@ namespace JollyAPI.Models.Entity
         }
 
         public int Id { get; set; }
-        public string? Name { get; set; }
-        public string? Hex { get; set; }
+        public string Name { get; set; }
+        public string Hex { get; set; }
 
-        public virtual ICollection<Image> Images { get; set; }
+        public virtual ICollection<Image>? Images { get; set; }
 
-        public virtual ICollection<Product> Products { get; set; }
+        public virtual ICollection<Product>? Products { get; set; }
     }
 }
