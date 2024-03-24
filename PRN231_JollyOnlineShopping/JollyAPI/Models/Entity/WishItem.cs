@@ -9,7 +9,7 @@ namespace JollyAPI.Models.Entity
         public int? WishlistId { get; set; }
         public int? ProductId { get; set; }
 
-        public virtual Product? Product { get; set; }
-        public virtual WishList? Wishlist { get; set; }
+        public virtual Product Product { get; set; }
+        public virtual WishList Wishlist { get; set; }
     }
 }

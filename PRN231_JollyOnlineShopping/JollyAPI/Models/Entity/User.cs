@@ -15,17 +15,17 @@ namespace JollyAPI.Models.Entity
         }
 
         public int Id { get; set; }
-        public string? FullName { get; set; }
-        public string? Email { get; set; }
-        public string? Password { get; set; }
-        public string? Phone { get; set; }
+        public string FullName { get; set; }
+        public string Email { get; set; }
+        public string Password { get; set; }
+        public string Phone { get; set; }
         public bool? Status { get; set; }
-        public string? Role { get; set; }
+        public string Role { get; set; }
         public int? WishlistId { get; set; }
         public int? CartId { get; set; }
 
-        public virtual Cart? Cart { get; set; }
-        public virtual WishList? Wishlist { get; set; }
+        public virtual Cart Cart { get; set; }
+        public virtual WishList Wishlist { get; set; }
         public virtual ICollection<Address> Addresses { get; set; }
         public virtual ICollection<Blog> Blogs { get; set; }
         public virtual ICollection<Comment> Comments { get; set; }

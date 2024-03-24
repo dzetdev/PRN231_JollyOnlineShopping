@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace JollyAPI.Models.Entity
 {
@@ -12,11 +13,12 @@ namespace JollyAPI.Models.Entity
         }
 
         public int Id { get; set; }
-        public string? Name { get; set; }
+        public string Name { get; set; }
         public int? ParentId { get; set; }
 
         public virtual Category? Parent { get; set; }
-        public virtual ICollection<Category> InverseParent { get; set; }
-        public virtual ICollection<Product> Products { get; set; }
+        public virtual ICollection<Category>? InverseParent { get; set; }
+        [JsonIgnore]
+        public virtual ICollection<Product>? Products { get; set; }
     }
 }
