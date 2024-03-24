@@ -16,29 +16,29 @@ namespace JollyAPI.Models.Entity
         {
         }
 
-        public virtual DbSet<Address> Addresses { get; set; } = null!;
-        public virtual DbSet<Blog> Blogs { get; set; } = null!;
-        public virtual DbSet<Cart> Carts { get; set; } = null!;
-        public virtual DbSet<Category> Categories { get; set; } = null!;
-        public virtual DbSet<Color> Colors { get; set; } = null!;
-        public virtual DbSet<Comment> Comments { get; set; } = null!;
-        public virtual DbSet<Image> Images { get; set; } = null!;
-        public virtual DbSet<Item> Items { get; set; } = null!;
-        public virtual DbSet<Order> Orders { get; set; } = null!;
-        public virtual DbSet<OrderDetail> OrderDetails { get; set; } = null!;
-        public virtual DbSet<Product> Products { get; set; } = null!;
-        public virtual DbSet<Rating> Ratings { get; set; } = null!;
-        public virtual DbSet<Size> Sizes { get; set; } = null!;
-        public virtual DbSet<User> Users { get; set; } = null!;
-        public virtual DbSet<WishItem> WishItems { get; set; } = null!;
-        public virtual DbSet<WishList> WishLists { get; set; } = null!;
+        public virtual DbSet<Address> Addresses { get; set; }
+        public virtual DbSet<Blog> Blogs { get; set; }
+        public virtual DbSet<Cart> Carts { get; set; }
+        public virtual DbSet<Category> Categories { get; set; }
+        public virtual DbSet<Color> Colors { get; set; }
+        public virtual DbSet<Comment> Comments { get; set; }
+        public virtual DbSet<Image> Images { get; set; }
+        public virtual DbSet<Item> Items { get; set; }
+        public virtual DbSet<Order> Orders { get; set; }
+        public virtual DbSet<OrderDetail> OrderDetails { get; set; }
+        public virtual DbSet<Product> Products { get; set; }
+        public virtual DbSet<Rating> Ratings { get; set; }
+        public virtual DbSet<Size> Sizes { get; set; }
+        public virtual DbSet<User> Users { get; set; }
+        public virtual DbSet<WishItem> WishItems { get; set; }
+        public virtual DbSet<WishList> WishLists { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseSqlServer("server =(local); database = JollyShoppingOnline;uid=sa;pwd=sa123;TrustServerCertificate=true");
+                optionsBuilder.UseSqlServer("Data Source=.;Initial Catalog=JollyShoppingOnline;Integrated Security=True");
             }
         }
 
@@ -71,7 +71,7 @@ namespace JollyAPI.Models.Entity
                 entity.HasOne(d => d.User)
                     .WithMany(p => p.Addresses)
                     .HasForeignKey(d => d.UserId)
-                    .HasConstraintName("FK__Address__user_id__5AEE82B9");
+                    .HasConstraintName("FK__Address__user_id__45F365D3");
             });
 
             modelBuilder.Entity<Blog>(entity =>
@@ -80,7 +80,9 @@ namespace JollyAPI.Models.Entity
 
                 entity.Property(e => e.Id).HasColumnName("id");
 
-                entity.Property(e => e.Content).HasColumnName("content");
+                entity.Property(e => e.Content)
+                    .HasColumnType("text")
+                    .HasColumnName("content");
 
                 entity.Property(e => e.Image)
                     .HasMaxLength(255)
@@ -103,7 +105,7 @@ namespace JollyAPI.Models.Entity
                 entity.HasOne(d => d.User)
                     .WithMany(p => p.Blogs)
                     .HasForeignKey(d => d.UserId)
-                    .HasConstraintName("FK__Blog__user_id__5BE2A6F2");
+                    .HasConstraintName("FK__Blog__user_id__46E78A0C");
             });
 
             modelBuilder.Entity<Cart>(entity =>
@@ -130,7 +132,7 @@ namespace JollyAPI.Models.Entity
                 entity.HasOne(d => d.Parent)
                     .WithMany(p => p.InverseParent)
                     .HasForeignKey(d => d.ParentId)
-                    .HasConstraintName("FK__Category__parent__5CD6CB2B");
+                    .HasConstraintName("FK__Category__parent__48CFD27E");
             });
 
             modelBuilder.Entity<Color>(entity =>
@@ -160,21 +162,17 @@ namespace JollyAPI.Models.Entity
                     .HasMaxLength(255)
                     .HasColumnName("content");
 
-                entity.Property(e => e.Date)
-                    .HasColumnType("datetime")
-                    .HasColumnName("date");
-
                 entity.Property(e => e.UserId).HasColumnName("user_id");
 
                 entity.HasOne(d => d.Blog)
                     .WithMany(p => p.Comments)
                     .HasForeignKey(d => d.BlogId)
-                    .HasConstraintName("FK__Comment__blog_id__5DCAEF64");
+                    .HasConstraintName("FK__Comment__blog_id__49C3F6B7");
 
                 entity.HasOne(d => d.User)
                     .WithMany(p => p.Comments)
                     .HasForeignKey(d => d.UserId)
-                    .HasConstraintName("FK__Comment__user_id__5EBF139D");
+                    .HasConstraintName("FK__Comment__user_id__4AB81AF0");
             });
 
             modelBuilder.Entity<Image>(entity =>
@@ -210,29 +208,19 @@ namespace JollyAPI.Models.Entity
 
                 entity.Property(e => e.CartId).HasColumnName("cart_id");
 
-                entity.Property(e => e.Color)
-                    .HasMaxLength(50)
-                    .HasColumnName("color")
-                    .IsFixedLength();
-
                 entity.Property(e => e.ProductId).HasColumnName("product_id");
 
                 entity.Property(e => e.Quantity).HasColumnName("quantity");
 
-                entity.Property(e => e.Size)
-                    .HasMaxLength(50)
-                    .HasColumnName("size")
-                    .IsFixedLength();
-
                 entity.HasOne(d => d.Cart)
                     .WithMany(p => p.Items)
                     .HasForeignKey(d => d.CartId)
-                    .HasConstraintName("FK__Item__cart_id__619B8048");
+                    .HasConstraintName("FK__Item__cart_id__4D94879B");
 
                 entity.HasOne(d => d.Product)
                     .WithMany(p => p.Items)
                     .HasForeignKey(d => d.ProductId)
-                    .HasConstraintName("FK__Item__product_id__628FA481");
+                    .HasConstraintName("FK__Item__product_id__4E88ABD4");
             });
 
             modelBuilder.Entity<Order>(entity =>
@@ -268,13 +256,13 @@ namespace JollyAPI.Models.Entity
                 entity.HasOne(d => d.User)
                     .WithMany(p => p.Orders)
                     .HasForeignKey(d => d.UserId)
-                    .HasConstraintName("FK__Order__user_id__6383C8BA");
+                    .HasConstraintName("FK__Order__user_id__4F7CD00D");
             });
 
             modelBuilder.Entity<OrderDetail>(entity =>
             {
                 entity.HasKey(e => new { e.OrderId, e.ProductId })
-                    .HasName("PK__OrderDet__022945F613752234");
+                    .HasName("PK__OrderDet__022945F63CEF8548");
 
                 entity.ToTable("OrderDetail");
 
@@ -282,29 +270,21 @@ namespace JollyAPI.Models.Entity
 
                 entity.Property(e => e.ProductId).HasColumnName("product_id");
 
-                entity.Property(e => e.Color)
-                    .HasMaxLength(50)
-                    .HasColumnName("color");
-
                 entity.Property(e => e.Price).HasColumnName("price");
 
                 entity.Property(e => e.Quantity).HasColumnName("quantity");
-
-                entity.Property(e => e.Size)
-                    .HasMaxLength(50)
-                    .HasColumnName("size");
 
                 entity.HasOne(d => d.Order)
                     .WithMany(p => p.OrderDetails)
                     .HasForeignKey(d => d.OrderId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__OrderDeta__order__6477ECF3");
+                    .HasConstraintName("FK__OrderDeta__order__5070F446");
 
                 entity.HasOne(d => d.Product)
                     .WithMany(p => p.OrderDetails)
                     .HasForeignKey(d => d.ProductId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__OrderDeta__produ__656C112C");
+                    .HasConstraintName("FK__OrderDeta__produ__5165187F");
             });
 
             modelBuilder.Entity<Product>(entity =>
@@ -334,17 +314,17 @@ namespace JollyAPI.Models.Entity
                 entity.HasOne(d => d.Category)
                     .WithMany(p => p.Products)
                     .HasForeignKey(d => d.CategoryId)
-                    .HasConstraintName("FK__Product__categor__66603565");
+                    .HasConstraintName("FK__Product__categor__52593CB8");
 
                 entity.HasMany(d => d.Colors)
                     .WithMany(p => p.Products)
                     .UsingEntity<Dictionary<string, object>>(
                         "ProductColor",
-                        l => l.HasOne<Color>().WithMany().HasForeignKey("ColorId").OnDelete(DeleteBehavior.ClientSetNull).HasConstraintName("FK__Product_C__color__6754599E"),
-                        r => r.HasOne<Product>().WithMany().HasForeignKey("ProductId").OnDelete(DeleteBehavior.ClientSetNull).HasConstraintName("FK__Product_C__produ__68487DD7"),
+                        l => l.HasOne<Color>().WithMany().HasForeignKey("ColorId").OnDelete(DeleteBehavior.ClientSetNull).HasConstraintName("FK__Product_C__color__534D60F1"),
+                        r => r.HasOne<Product>().WithMany().HasForeignKey("ProductId").OnDelete(DeleteBehavior.ClientSetNull).HasConstraintName("FK__Product_C__produ__5441852A"),
                         j =>
                         {
-                            j.HasKey("ProductId", "ColorId").HasName("PK__Product___E6164119740BB4B1");
+                            j.HasKey("ProductId", "ColorId").HasName("PK__Product___E6164119EE414140");
 
                             j.ToTable("Product_Color");
 
@@ -357,11 +337,11 @@ namespace JollyAPI.Models.Entity
                     .WithMany(p => p.Products)
                     .UsingEntity<Dictionary<string, object>>(
                         "ProductSize",
-                        l => l.HasOne<Size>().WithMany().HasForeignKey("SizeId").OnDelete(DeleteBehavior.ClientSetNull).HasConstraintName("FK__Product_S__size___6A30C649"),
-                        r => r.HasOne<Product>().WithMany().HasForeignKey("ProductId").OnDelete(DeleteBehavior.ClientSetNull).HasConstraintName("FK__Product_S__produ__693CA210"),
+                        l => l.HasOne<Size>().WithMany().HasForeignKey("SizeId").OnDelete(DeleteBehavior.ClientSetNull).HasConstraintName("FK__Product_S__size___5629CD9C"),
+                        r => r.HasOne<Product>().WithMany().HasForeignKey("ProductId").OnDelete(DeleteBehavior.ClientSetNull).HasConstraintName("FK__Product_S__produ__5535A963"),
                         j =>
                         {
-                            j.HasKey("ProductId", "SizeId").HasName("PK__Product___47DED116A58D392F");
+                            j.HasKey("ProductId", "SizeId").HasName("PK__Product___47DED116756538B7");
 
                             j.ToTable("Product_Size");
 
@@ -381,10 +361,6 @@ namespace JollyAPI.Models.Entity
                     .HasMaxLength(255)
                     .HasColumnName("content");
 
-                entity.Property(e => e.Date)
-                    .HasColumnType("datetime")
-                    .HasColumnName("date");
-
                 entity.Property(e => e.ProductId).HasColumnName("product_id");
 
                 entity.Property(e => e.Quantity).HasColumnName("quantity");
@@ -394,19 +370,19 @@ namespace JollyAPI.Models.Entity
                 entity.HasOne(d => d.Product)
                     .WithMany(p => p.Ratings)
                     .HasForeignKey(d => d.ProductId)
-                    .HasConstraintName("FK__Rating__product___6B24EA82");
+                    .HasConstraintName("FK__Rating__product___571DF1D5");
 
                 entity.HasOne(d => d.User)
                     .WithMany(p => p.Ratings)
                     .HasForeignKey(d => d.UserId)
-                    .HasConstraintName("FK__Rating__user_id__6C190EBB");
+                    .HasConstraintName("FK__Rating__user_id__5812160E");
             });
 
             modelBuilder.Entity<Size>(entity =>
             {
                 entity.ToTable("Size");
 
-                entity.HasIndex(e => e.Name, "UQ__Size__72E12F1BACCCB7D9")
+                entity.HasIndex(e => e.Name, "UQ__Size__72E12F1B64C0ABED")
                     .IsUnique();
 
                 entity.Property(e => e.Id).HasColumnName("id");
@@ -420,10 +396,10 @@ namespace JollyAPI.Models.Entity
             {
                 entity.ToTable("User");
 
-                entity.HasIndex(e => e.CartId, "UQ__User__2EF52A2608D2B458")
+                entity.HasIndex(e => e.CartId, "UQ__User__2EF52A26BAE9260F")
                     .IsUnique();
 
-                entity.HasIndex(e => e.WishlistId, "UQ__User__6151514F4DCE02BA")
+                entity.HasIndex(e => e.WishlistId, "UQ__User__6151514F809229F9")
                     .IsUnique();
 
                 entity.Property(e => e.Id).HasColumnName("id");
@@ -478,12 +454,12 @@ namespace JollyAPI.Models.Entity
                 entity.HasOne(d => d.Product)
                     .WithMany(p => p.WishItems)
                     .HasForeignKey(d => d.ProductId)
-                    .HasConstraintName("FK__WishItem__produc__6EF57B66");
+                    .HasConstraintName("FK__WishItem__produc__59063A47");
 
                 entity.HasOne(d => d.Wishlist)
                     .WithMany(p => p.WishItems)
                     .HasForeignKey(d => d.WishlistId)
-                    .HasConstraintName("FK__WishItem__wishli__6FE99F9F");
+                    .HasConstraintName("FK__WishItem__wishli__59FA5E80");
             });
 
             modelBuilder.Entity<WishList>(entity =>
